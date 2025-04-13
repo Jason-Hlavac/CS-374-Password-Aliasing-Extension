@@ -1,0 +1,12 @@
+{
+    "name": "Password Aliaser Extension",
+    "description": "Alias your passwords for more security. By John, Lucy, Nate, and Jason",
+    "version": "1.0",
+    "manifest_version": 3,
+    "content_scripts": [
+        {
+          "js": ["aliaser.js"],
+          "matches": [ "<all_urls>" ]
+        }
+      ]
+}
