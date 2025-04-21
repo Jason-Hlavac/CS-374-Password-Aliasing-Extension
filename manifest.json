@@ -9,7 +9,7 @@
     },
     "content_scripts": [
         {
-          "js": ["aliaser.js"],
+          "js": ["aliaser.js", "startup.js"],
           "matches": [ "<all_urls>" ]
         }
       ]
