@@ -8,7 +8,7 @@ function main(){
 
     var button = document.createElement("Button");
     button.addEventListener('click', function(){
-        console.log(findPassword(passwordField));
+        console.log(generateAlias(findPassword(passwordField)));
     });
 
     button.textContent = "Find Password";
