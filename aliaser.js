@@ -7,7 +7,7 @@ function main(){
 
     var button = document.createElement("Button");
     button.addEventListener('click', function(){
-        console.log(findPassword());
+        console.log(generateAlias(findPassword()[password]));
     });
     button.textContent = "Find Password";
     document.body.prepend(button);
