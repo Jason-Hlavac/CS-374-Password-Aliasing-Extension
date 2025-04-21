@@ -4,15 +4,15 @@ function main(){
 
     console.log('Hello World!');
     console.log(alias)
+    const passwordField = findPasswordField();
 
     var button = document.createElement("Button");
     button.addEventListener('click', function(){
-        console.log(findPassword());
+        console.log(findPassword(passwordField));
     });
+
     button.textContent = "Find Password";
     document.body.prepend(button);
-
-
 };
 
 // aliaser.js
@@ -31,7 +31,7 @@ function hashCode(str) {
     }
     return hash;
 }
-  
+
 function generateAlias(simplePassword, domain) {
     const combined = simplePassword + "@" + domain;
     const hash = hashCode(combined);
@@ -39,9 +39,14 @@ function generateAlias(simplePassword, domain) {
 }
 
 
-function findPassword(){
+function findPasswordField(){
     const passwordElement = document.querySelector('input[type= "password"]');
-    return({element: passwordElement, password: passwordElement.value});
+    return(passwordElement);
 }
 
-main();
+function findPassword(field){
+    return(field.value)
+}
+
+
+window.onload = main();
