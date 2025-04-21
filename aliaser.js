@@ -3,6 +3,7 @@ function main(){
     var alias = generateAlias(password);
 
     console.log('Hello World!');
+    console.log(UserID.id);
     console.log(alias)
 
     var button = document.createElement("Button");
@@ -43,5 +44,10 @@ function findPassword(){
     const passwordElement = document.querySelector('input[type= "password"]');
     return({element: passwordElement, password: passwordElement.value});
 }
+
+chrome.identity.getProfileUserInfo(function(UserID) {
+    return UserID.id;
+  });
+
 
 main();
