@@ -1,25 +1,23 @@
-chrome.runtime.onStartup.addListener(() => {
-    checkSigninStatus();
-  });
-  
-  chrome.runtime.onInstalled.addListener(() => {
-    checkSigninStatus();
-  });
-  
-  function checkSigninStatus() {
-    chrome.identity.getProfileUserInfo((userInfo) => {
-      if (!userInfo.email) {
-        chrome.notifications.create({
-          type: "basic",
-          iconUrl: "icon.png",
-          title: "Not Signed In",
-          message: "Please sign in to your Google account. This extension will now disable itself.",
-          priority: 2
-        });
-        
-        chrome.management.getSelf(ext => {
-          chrome.management.setEnabled(ext.id, false);
-        });
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+  //Status Code 1: Return UserInfo
+  if (message == 1) {
+    chrome.identity.getAuthToken({ interactive: true }, function(token) {
+      if (chrome.runtime.lastError) {
+        console.error("Auth error:", chrome.runtime.lastError.message);
+        sendResponse({ success: false, message: "Auth failed" });
+        return;
       }
+
+      chrome.identity.getProfileUserInfo(function(userInfo) {
+        console.log("userInfo:", userInfo);
+        sendResponse({ success: true, message: userInfo });
+      });
     });
+
+    return true;
+  }else if(message == 2){
+    //Handling for status code 2
   }
+
+  return false;
+});

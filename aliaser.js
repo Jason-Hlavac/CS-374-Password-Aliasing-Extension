@@ -1,19 +1,13 @@
 function main(){
     const password = "iluvcats123";
-    var alias = generateAlias(password);
-
-    console.log('Hello World!');
-    console.log(UserID.id);
-    console.log(alias)
-
+    const passwordElement = findPasswordElement();
     var button = document.createElement("Button");
     button.addEventListener('click', function(){
-        console.log(findPassword());
+        console.log(findPassword(passwordElement));
     });
     button.textContent = "Find Password";
     document.body.prepend(button);
-
-
+    sendRequest(1);
 };
 
 // aliaser.js
@@ -40,14 +34,27 @@ function generateAlias(simplePassword, domain) {
 }
 
 
-function findPassword(){
-    const passwordElement = document.querySelector('input[type= "password"]');
-    return({element: passwordElement, password: passwordElement.value});
+function findPasswordElement(){
+    return(document.querySelector('input[type= "password"]'));
 }
 
-chrome.identity.getProfileUserInfo(function(UserID) {
-    return UserID.id;
-  });
+function findPassword(element){
+    return(element.value);
+}
 
+function sendRequest(statusCode) {
+    chrome.runtime.sendMessage(statusCode, function(response) {
+      receiveMessage(response);
+    });
+  }
+  
+
+function receiveMessage(response){
+    if(response.success){
+        console.log(response.message);
+    }else{
+        console.log("Error with password manager");
+    }
+}
 
 main();
