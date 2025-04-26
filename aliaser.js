@@ -43,7 +43,7 @@ function findPassword(element){
 }
 
 function sendRequest(statusCode) {
-    chrome.runtime.sendMessage(statusCode, function(response) {
+    chrome.runtime.sendMessage({statusCode: statusCode}, function(response) {
       receiveMessage(response);
     });
   }

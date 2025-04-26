@@ -1,6 +1,6 @@
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   //Status Code 1: Return UserInfo
-  if (message == 1) {
+  if (message.statusCode == 1) {
     chrome.identity.getAuthToken({ interactive: true }, function(token) {
       if (chrome.runtime.lastError) {
         console.error("Auth error:", chrome.runtime.lastError.message);
@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     });
 
     return true;
-  }else if(message == 2){
+  }else if(message.statusCode == 2){
     //Handling for status code 2
   }
 
