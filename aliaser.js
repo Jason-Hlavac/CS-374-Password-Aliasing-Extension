@@ -1,4 +1,4 @@
-function main(){
+async function main(){
     const password = "iluvcats123";
     const passwordElement = findPasswordElement();
     var button = document.createElement("Button");
@@ -7,7 +7,12 @@ function main(){
     });
     button.textContent = "Find Password";
     document.body.prepend(button);
-    sendRequest(1);
+    try{
+        const result = await sendRequest(2);
+        console.log(result);
+    }catch(error){
+        console.error(error);
+    }
 };
 
 // aliaser.js
@@ -26,13 +31,12 @@ function hashCode(str) {
     }
     return hash;
 }
-  
+
 function generateAlias(simplePassword, domain) {
     const combined = simplePassword + "@" + domain;
     const hash = hashCode(combined);
     return btoa(hash.toString()).slice(0, 12); // Base64 encode and shorten
 }
-
 
 function findPasswordElement(){
     return(document.querySelector('input[type= "password"]'));
@@ -43,17 +47,34 @@ function findPassword(element){
 }
 
 function sendRequest(statusCode) {
-    chrome.runtime.sendMessage({statusCode: statusCode}, function(response) {
-      receiveMessage(response);
+    if(statusCode == 1){
+    return new Promise((resolve, reject) => {
+      chrome.runtime.sendMessage({ statusCode: statusCode }, function (response) {
+        if (chrome.runtime.lastError) {
+          reject(chrome.runtime.lastError);
+        } else {
+          resolve(receiveMessage(response));
+        }
+      });
     });
+    } else if(statusCode == 2){window.location.host
+        return new Promise((resolve, reject) => {
+          chrome.runtime.sendMessage({ statusCode: statusCode, hostName : window.location.host }, function (response) {
+            if (chrome.runtime.lastError) {
+              reject(chrome.runtime.lastError);
+            } else {
+              resolve(receiveMessage(response));
+            }
+          });
+        });
+    }
   }
   
-
 function receiveMessage(response){
     if(response.success){
-        console.log(response.message);
+        return(response.message);
     }else{
-        console.log("Error with password manager");
+        return(-1);
     }
 }
 
