@@ -1,18 +1,19 @@
-function main(){
+async function main(){
     const password = "iluvcats123";
-    var alias = generateAlias(password);
-
-    console.log('Hello World!');
-    console.log(alias)
-    const passwordField = findPasswordField();
-
+    const passwordElement = findPasswordElement();
     var button = document.createElement("Button");
     button.addEventListener('click', function(){
-        console.log(generateAlias(findPassword(passwordField)));
+        console.log(findPassword(passwordElement));
     });
 
     button.textContent = "Find Password";
     document.body.prepend(button);
+    try{
+        const result = await sendRequest(2);
+        console.log(result);
+    }catch(error){
+        console.error(error);
+    }
 };
 
 // aliaser.js
@@ -38,15 +39,44 @@ function generateAlias(simplePassword, domain) {
     return btoa(hash.toString()).slice(0, 12); // Base64 encode and shorten
 }
 
-
-function findPasswordField(){
-    const passwordElement = document.querySelector('input[type= "password"]');
-    return(passwordElement);
+function findPasswordElement(){
+    return(document.querySelector('input[type= "password"]'));
 }
 
-function findPassword(field){
-    return(field.value)
+function findPassword(element){
+    return(element.value);
 }
 
+function sendRequest(statusCode) {
+    if(statusCode == 1){
+    return new Promise((resolve, reject) => {
+      chrome.runtime.sendMessage({ statusCode: statusCode }, function (response) {
+        if (chrome.runtime.lastError) {
+          reject(chrome.runtime.lastError);
+        } else {
+          resolve(receiveMessage(response));
+        }
+      });
+    });
+    } else if(statusCode == 2){window.location.host
+        return new Promise((resolve, reject) => {
+          chrome.runtime.sendMessage({ statusCode: statusCode, hostName : window.location.host }, function (response) {
+            if (chrome.runtime.lastError) {
+              reject(chrome.runtime.lastError);
+            } else {
+              resolve(receiveMessage(response));
+            }
+          });
+        });
+    }
+  }
+  
+function receiveMessage(response){
+    if(response.success){
+        return(response.message);
+    }else{
+        return(-1);
+    }
+}
 
-window.onload = main();
+main();

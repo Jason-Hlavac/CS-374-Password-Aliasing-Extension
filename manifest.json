@@ -3,10 +3,21 @@
     "description": "Alias your passwords for more security. By John, Lucy, Nate, and Jason",
     "version": "1.0",
     "manifest_version": 3,
+    "oauth2": {
+      "client_id": "724504347065-0a1mdjk5d48uh6me5nqlks18o9825tng.apps.googleusercontent.com",
+      "scopes": ["https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/userinfo.profile"
+        ]
+    },
+    "key" : "gnhcjmedeihekcmidmbfmpkihnpadpia",
+    "permissions" : ["identity", "identity.email", "storage"],
     "content_scripts": [
         {
           "js": ["aliaser.js"],
           "matches": [ "<all_urls>" ]
         }
-      ]
+      ],
+      "background" : {
+        "service_worker":  "startup.js"
+      }
 }
