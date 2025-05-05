@@ -11,7 +11,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
       chrome.identity.getProfileUserInfo(function(userInfo) {
         console.log("userInfo:", userInfo);
-        sendResponse({ success: true, message: userInfo });
+        sendResponse({ success: true, message: userInfo.id });
       });
     });
 
@@ -65,7 +65,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
           }
         }
         chrome.storage.local.set({ bst: data.bst });
-        sendResponse({success: true, message: data.bst});
+        sendResponse({success: true, message: data.bst[current][1]});
         return;
       });
     });

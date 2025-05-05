@@ -10,7 +10,10 @@
         ]
     },
     "key" : "gnhcjmedeihekcmidmbfmpkihnpadpia",
-    "permissions" : ["identity", "identity.email", "storage"],
+    "permissions" : ["identity", "identity.email", "storage", "tabs", "scripting"],
+    "action" : {
+      "default_popup": "popup.html"
+    }, 
     "content_scripts": [
         {
           "js": ["aliaser.js"],

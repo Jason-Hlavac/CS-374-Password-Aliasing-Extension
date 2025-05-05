@@ -1,21 +1,3 @@
-async function main(){
-    const password = "iluvcats123";
-    const passwordElement = findPasswordElement();
-    var button = document.createElement("Button");
-    button.addEventListener('click', function(){
-        console.log(findPassword(passwordElement));
-    });
-
-    button.textContent = "Find Password";
-    document.body.prepend(button);
-    try{
-        const result = await sendRequest(2);
-        console.log(result);
-    }catch(error){
-        console.error(error);
-    }
-};
-
 // aliaser.js
 function hashCode(str) {
     var hash = 0, i, chr;
@@ -40,7 +22,7 @@ function generateAlias(simplePassword, domain) {
 }
 
 function findPasswordElement(){
-    return(document.querySelector('input[type= "password"]'));
+    return(document.querySelector('input[type="password"]'));
 }
 
 function findPassword(element){
@@ -58,7 +40,7 @@ function sendRequest(statusCode) {
         }
       });
     });
-    } else if(statusCode == 2){window.location.host
+    } else if(statusCode == 2){
         return new Promise((resolve, reject) => {
           chrome.runtime.sendMessage({ statusCode: statusCode, hostName : window.location.host }, function (response) {
             if (chrome.runtime.lastError) {
@@ -71,6 +53,7 @@ function sendRequest(statusCode) {
     }
   }
   
+
 function receiveMessage(response){
     if(response.success){
         return(response.message);
@@ -79,4 +62,35 @@ function receiveMessage(response){
     }
 }
 
-main();
+async function replacePassword(){
+  if(passwordElement == null){
+    passwordElement = findPasswordElement()
+  }
+  if(passwordElement != null){
+    var password = findPassword(passwordElement);
+    let salt, userId;
+    try{
+      salt = await sendRequest(2);
+    }catch (e){
+      console.log(e);
+    }
+    try{
+      userId = await sendRequest(1);
+    }catch(e){
+      console.log(e);
+    }
+    const hashString = password + userId + salt;
+    const newPassword = hashCode(hashString);
+    console.log("New Password Generated: " + newPassword);
+    passwordElement.value = newPassword;
+  }
+}
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "replacePassword") {
+    replacePassword();
+  }
+});
+
+
+var passwordElement = findPasswordElement();
