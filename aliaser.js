@@ -73,11 +73,13 @@ async function replacePassword(){
       salt = await sendRequest(2);
     }catch (e){
       console.log(e);
+      return;
     }
     try{
       userId = await sendRequest(1);
     }catch(e){
       console.log(e);
+      return;
     }
     const hashString = password + userId + salt;
     const newPassword = hashCode(hashString);
