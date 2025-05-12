@@ -1,6 +1,6 @@
 {
     "name": "Password Aliaser Extension",
-    "description": "Alias your passwords for more security. By John, Lucy, Nate, and Jason",
+    "description": "Alias your passwords before inputting them into a site. By Jason, John, and Nate",
     "version": "1.0",
     "manifest_version": 3,
     "oauth2": {
